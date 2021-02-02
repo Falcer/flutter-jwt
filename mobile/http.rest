@@ -1,0 +1,13 @@
+POST https://mg-indonesia.co.id/api/v1/login
+Content-Type: application/json
+
+{
+	"username": "uas",
+	"password": "1234567890!"
+}
+
+###
+
+GET https://mg-indonesia.co.id/api/v1/opname/2020-11-26/2020-11-27
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTIxNjY5ODksInVpZCI6MTg4LCJ1c2VyIjoidWFzIn0.kj3wfPTTMTF4a0JLsuM4JessBrtAI4vp3_CFk8qKr5w
