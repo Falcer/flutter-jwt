@@ -114,7 +114,6 @@ class _LoginViewState extends State<LoginView> {
                                         labelStyle: Theme.of(context)
                                             .textTheme
                                             .subtitle2,
-                                        hintText: "******",
                                         border: InputBorder.none,
                                       ),
                                       obscureText: true,
