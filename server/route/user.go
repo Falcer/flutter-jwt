@@ -12,16 +12,36 @@ type userRoute struct {
 	service service.UserService
 }
 
-// UserRoute New()
-func UserRoute(app *fiber.App, userService service.UserService) {
-	uRoute := &userRoute{userService}
-	app.Get("/users", uRoute.getAllUser)
-	app.Post("/login", uRoute.login)
-	app.Post("/register", uRoute.register)
-	app.Post("/refresh", uRoute.refresh)
-}
-
 func (u *userRoute) getAllUser(ctx *fiber.Ctx) error {
+	var token string
+	header := strings.Split(ctx.Get("Authorization"), " ")
+
+	if header[0] != "Bearer" {
+		return ctx.Status(401).JSON(&fiber.Map{
+			"success": false,
+			"message": "Authorization Header prefix must be 'Bearer'",
+			"data":    nil,
+		})
+	}
+
+	if len(header) != 2 {
+		return ctx.Status(401).JSON(&fiber.Map{
+			"success": false,
+			"message": "Authorization Header incorrect",
+			"data":    nil,
+		})
+	}
+
+	token = header[1]
+
+	if err := u.service.Verify(token); err != nil {
+		return ctx.Status(401).JSON(&fiber.Map{
+			"success": false,
+			"message": "Authorization incorrect",
+			"data":    nil,
+		})
+	}
+
 	users, err := u.service.GetAllUser()
 	if err != nil {
 		return ctx.Status(500).JSON(&fiber.Map{
@@ -89,9 +109,23 @@ func (u *userRoute) refresh(ctx *fiber.Ctx) error {
 	var token string
 	header := strings.Split(ctx.Get("Authorization"), " ")
 
-	if len(header) == 2 {
-		token = header[1]
+	if header[0] != "Bearer" {
+		return ctx.Status(401).JSON(&fiber.Map{
+			"success": false,
+			"message": "Authorization Header prefix must be 'Bearer'",
+			"data":    nil,
+		})
 	}
+
+	if len(header) != 2 {
+		return ctx.Status(401).JSON(&fiber.Map{
+			"success": false,
+			"message": "Authorization Header incorrect",
+			"data":    nil,
+		})
+	}
+
+	token = header[1]
 
 	newToken, err := u.service.RefreshToken(token)
 
@@ -107,4 +141,13 @@ func (u *userRoute) refresh(ctx *fiber.Ctx) error {
 		"message": "Login success",
 		"data":    &newToken,
 	})
+}
+
+// UserRoute New()
+func UserRoute(app *fiber.App, userService service.UserService) {
+	route := &userRoute{userService}
+	app.Get("/users", route.getAllUser)
+	app.Post("/login", route.login)
+	app.Post("/register", route.register)
+	app.Post("/refresh", route.refresh)
 }

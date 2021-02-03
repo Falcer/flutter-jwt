@@ -78,8 +78,24 @@ func (r *repo) RefreshToken(refeshToken string) (*model.UserToken, error) {
 	if !token.Valid {
 		return nil, fmt.Errorf("Token not valid")
 	}
-	newToken, err := createToken(claims["user"].(string))
+	newToken, err := createToken(claims["id"].(string))
 	return newToken, err
+}
+
+func (r *repo) Verify(tokenString string) error {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if jwt.GetSigningMethod("HS256") != token.Method {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	})
+	if err != nil {
+		return fmt.Errorf("Error : %s", err)
+	}
+	if !token.Valid {
+		return fmt.Errorf("Token not valid")
+	}
+	return nil
 }
 
 func passwordHash(password string) (string, error) {
@@ -97,7 +113,7 @@ func createToken(userID string) (*model.UserToken, error) {
 	refreshToken := jwt.MapClaims{}
 	refreshToken["authorize"] = true
 	refreshToken["id"] = userID
-	refreshToken["exp"] = time.Now().Add(time.Minute * 5).Unix() // 5 Minutes
+	refreshToken["exp"] = time.Now().Add(time.Hour * 24 * 30 * 12 * 5).Unix() // 5 years
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshToken)
 	rToken, err := rt.SignedString([]byte(os.Getenv("SECRET_KEY")))
 	if err != nil {
@@ -108,7 +124,7 @@ func createToken(userID string) (*model.UserToken, error) {
 	accessToken := jwt.MapClaims{}
 	accessToken["authorize"] = true
 	accessToken["id"] = userID
-	accessToken["exp"] = time.Now().Add(time.Hour * 24 * 30 * 12 * 5).Unix() // 5 years
+	accessToken["exp"] = time.Now().Add(time.Minute * 5).Unix() // 5 Minutes
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, accessToken)
 	aToken, err := at.SignedString([]byte(os.Getenv("SECRET_KEY")))
 	if err != nil {

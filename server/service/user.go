@@ -11,5 +11,6 @@ type (
 		Register(register model.Register) (*model.User, error)
 		GetAllUser() (*[]model.User, error)
 		RefreshToken(refeshToken string) (*model.UserToken, error)
+		Verify(tokenString string) error
 	}
 )

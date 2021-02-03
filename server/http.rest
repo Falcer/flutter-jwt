@@ -1,5 +1,12 @@
 GET http://127.0.0.1:8080/users
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemUiOnRydWUsImV4cCI6MTYxMjMyMjc2NywiaWQiOiIxbnhDZmlTaG5kb2VkUkZrd1I5cm00M3NneXIifQ.qzfCrJUbVG-ISfwQJAwaD2L--PZQ1RnE6BE-c95Gcn0
+
+###
+
+POST http://127.0.0.1:8080/refresh
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemUiOnRydWUsImV4cCI6MTc2Nzg0MjUwOCwiaWQiOiIxbnhDZmlTaG5kb2VkUkZrd1I5cm00M3NneXIifQ.H6fRjK3025Q1-7SXRXl6YDiZ0TT9od7Bi-GkurpZ21U
 
 ###
 
@@ -10,6 +17,7 @@ Content-Type: application/json
 	"username": "arganaphangquestian",
 	"password": "arganapass123"
 }
+
 ###
 
 POST http://127.0.0.1:8080/register

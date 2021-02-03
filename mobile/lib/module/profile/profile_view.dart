@@ -12,6 +12,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: Theme.of(context).iconTheme,
         centerTitle: false,
         title: Padding(
           padding: EdgeInsets.only(left: 16),
