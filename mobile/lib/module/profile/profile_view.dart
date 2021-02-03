@@ -27,7 +27,18 @@ class _ProfileViewState extends State<ProfileView> {
           onTap: () {
             Get.offAll(LoginPage());
           },
-          child: Text("Logout"),
+          child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).accentColor.withOpacity(.6),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 32.0,
+                ),
+                child: Text("Logout"),
+              )),
         ),
       ),
     );

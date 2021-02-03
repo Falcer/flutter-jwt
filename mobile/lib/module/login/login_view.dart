@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple/module/home/home_page.dart';
+import 'package:simple/module/login/http/login.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -106,7 +107,7 @@ class _LoginViewState extends State<LoginView> {
                                     child: TextField(
                                       onChanged: (newVal) {
                                         setState(() {
-                                          username = newVal;
+                                          password = newVal;
                                         });
                                       },
                                       decoration: InputDecoration(
@@ -132,9 +133,31 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              // TODO: Login
-                              // If Success Go To Home
-                              Get.offAll(HomePage());
+                              if (username.isEmpty || password.isEmpty) {
+                                Get.snackbar(
+                                  "Oppss...",
+                                  "Fields can't be blank",
+                                );
+                                return;
+                              }
+                              login(username, password).then((res) {
+                                if (!res["success"]) {
+                                  Get.snackbar(
+                                    "Oppss...",
+                                    res["message"],
+                                  );
+                                  return;
+                                }
+                                Get.offAll(
+                                  HomePage(),
+                                );
+                              }).catchError((_) {
+                                Get.snackbar(
+                                  "Oppss...",
+                                  "Username or Password incorrect",
+                                );
+                                return;
+                              });
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(

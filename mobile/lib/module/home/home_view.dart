@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:simple/controller/user.dart';
 import 'package:simple/module/profile/profile_page.dart';
 
 class HomeView extends StatefulWidget {
@@ -8,11 +9,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  @override
-  void initState() {
-    super.initState();
-    _getData();
-  }
+  final userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -48,28 +45,34 @@ class _HomeViewState extends State<HomeView> {
         onRefresh: () async {
           _getData();
         },
-        child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.only(bottom: 16.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor.withOpacity(.6),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-                child: Text("Hello $index"),
-              ),
-            );
-          },
+        child: GetBuilder<UserController>(
+          init: UserController(),
+          builder: (controller) => ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+            itemCount: controller.stateUsers.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: EdgeInsets.only(bottom: 16.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor.withOpacity(.6),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 24.0,
+                    horizontal: 24.0,
+                  ),
+                  child: Text("Name: ${controller.stateUsers[index].name}"),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  // TODO: Get All Data
-  void _getData() async {}
+  void _getData() async {
+    userController.loadUsers();
+  }
 }

@@ -1,6 +1,6 @@
 GET http://127.0.0.1:8080/users
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemUiOnRydWUsImV4cCI6MTYxMjMyMjc2NywiaWQiOiIxbnhDZmlTaG5kb2VkUkZrd1I5cm00M3NneXIifQ.qzfCrJUbVG-ISfwQJAwaD2L--PZQ1RnE6BE-c95Gcn0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemUiOnRydWUsImV4cCI6MTYxMjM2Mzk3NSwiaWQiOiIxbnlZQUZTUlFWYjI0eFpIQXV3V2VPSlI0eFgifQ.c5w6eRlg8vot_JGJOtPoEkreetpBQlHLlyruJkFZ118
 
 ###
 
@@ -14,8 +14,8 @@ POST http://127.0.0.1:8080/login
 Content-Type: application/json
 
 {
-	"username": "arganaphangquestian",
-	"password": "arganapass123"
+	"username": "arga",
+	"password": "arga123"
 }
 
 ###
@@ -26,6 +26,6 @@ Content-Type: application/json
 {
 	"name": "Argana Phangquestian",
 	"email": "arganaphangquestian@gmail.com",
-	"username": "arganaphangquestian",
-	"password": "arganapass123"
+	"username": "arga1",
+	"password": "arga123"
 }
