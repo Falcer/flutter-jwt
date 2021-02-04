@@ -125,43 +125,43 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (username.isEmpty || password.isEmpty) {
+                        GestureDetector(
+                          onTap: () {
+                            if (username.isEmpty || password.isEmpty) {
+                              Get.snackbar(
+                                "Oppss...",
+                                "Fields can't be blank",
+                              );
+                              return;
+                            }
+                            login(username, password).then((res) {
+                              if (!res["success"]) {
                                 Get.snackbar(
                                   "Oppss...",
-                                  "Fields can't be blank",
+                                  res["message"],
                                 );
                                 return;
                               }
-                              login(username, password).then((res) {
-                                if (!res["success"]) {
-                                  Get.snackbar(
-                                    "Oppss...",
-                                    res["message"],
-                                  );
-                                  return;
-                                }
-                                Get.offAll(
-                                  HomePage(),
-                                );
-                              }).catchError((_) {
-                                Get.snackbar(
-                                  "Oppss...",
-                                  "Username or Password incorrect",
-                                );
-                                return;
-                              });
-                            },
+                              Get.offAll(
+                                HomePage(),
+                              );
+                            }).catchError((_) {
+                              Get.snackbar(
+                                "Oppss...",
+                                "Username or Password incorrect",
+                              );
+                              return;
+                            });
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                vertical: 16.0,
+                                vertical: 8.0,
                                 horizontal: 48.0,
                               ),
                               child: Text(
