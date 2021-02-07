@@ -33,7 +33,8 @@
 3. Rename `.env.example` into `.env`, and fill the variable
 
 ### Todos
-- [ ] Refresh Token
+- [ ] Refresh Token Interceptor
+- [ ] Retry Interceptor
 
 ### For web
 1. Setup NodeJS, we use NodeJS v15.6 for development

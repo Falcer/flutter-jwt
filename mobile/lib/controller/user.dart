@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:simple/data/entity/user.dart';
-import 'package:simple/http/users.dart';
+import 'package:simple/data/http/users.dart';
 
 class UserController extends GetxController {
   var stateUsers = List<User>().obs;
