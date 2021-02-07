@@ -6,6 +6,7 @@ import (
 	"github.com/arganaphangquestian/flutter-jwt/server/model"
 	"github.com/arganaphangquestian/flutter-jwt/server/repository"
 	"github.com/segmentio/ksuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type (
@@ -16,7 +17,28 @@ type (
 
 // New UserRepository
 func New() repository.UserRepository {
-	var users []model.UserWithPassword
+	bytes, _ := bcrypt.GenerateFromPassword([]byte("pass123"), 14)
+	var users []model.UserWithPassword = []model.UserWithPassword{
+		{
+			ID:       "1",
+			Name:     "Argana Phangquestian",
+			Username: "arga",
+			Email:    "arganaphangquestian@gmail.com",
+			Password: string(bytes),
+		}, {
+			ID:       "2",
+			Name:     "Rahmat Deni",
+			Username: "deni",
+			Email:    "rahmatdeni@gmail.com",
+			Password: string(bytes),
+		}, {
+			ID:       "3",
+			Name:     "Devina Vantissha",
+			Username: "devina",
+			Email:    "devinavantissha@gmail.com",
+			Password: string(bytes),
+		},
+	}
 	return &db{users}
 }
 

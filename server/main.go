@@ -11,6 +11,7 @@ import (
 	"github.com/arganaphangquestian/flutter-jwt/server/service"
 	serviceImpl "github.com/arganaphangquestian/flutter-jwt/server/service/impl"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -39,6 +40,16 @@ func init() {
 
 func main() {
 	app := fiber.New()
+	var configDefault = cors.Config{
+		AllowCredentials: true,
+		Next:             nil,
+		AllowOrigins:     "*",
+		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH",
+		AllowHeaders:     "",
+		ExposeHeaders:    "",
+		MaxAge:           0,
+	}
+	app.Use(cors.New(configDefault))
 	route.UserRoute(app, userService)
 	log.Fatal(app.Listen(fmt.Sprintf(":%s", port)))
 }

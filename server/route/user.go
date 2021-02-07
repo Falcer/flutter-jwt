@@ -98,6 +98,11 @@ func (u *userRoute) login(ctx *fiber.Ctx) error {
 			"data":    nil,
 		})
 	}
+	cookie := new(fiber.Cookie)
+	cookie.Name = "jid"
+	cookie.Value = token.RefreshToken
+	cookie.HTTPOnly = true
+	ctx.Cookie(cookie)
 	return ctx.Status(200).JSON(&fiber.Map{
 		"success": true,
 		"message": "Login success",
@@ -106,28 +111,9 @@ func (u *userRoute) login(ctx *fiber.Ctx) error {
 }
 
 func (u *userRoute) refresh(ctx *fiber.Ctx) error {
-	var token string
-	header := strings.Split(ctx.Get("Authorization"), " ")
+	refreshToken := ctx.Cookies("jid")
 
-	if header[0] != "Bearer" {
-		return ctx.Status(401).JSON(&fiber.Map{
-			"success": false,
-			"message": "Authorization Header prefix must be 'Bearer'",
-			"data":    nil,
-		})
-	}
-
-	if len(header) != 2 {
-		return ctx.Status(401).JSON(&fiber.Map{
-			"success": false,
-			"message": "Authorization Header incorrect",
-			"data":    nil,
-		})
-	}
-
-	token = header[1]
-
-	newToken, err := u.service.RefreshToken(token)
+	newToken, err := u.service.RefreshToken(refreshToken)
 
 	if err != nil {
 		return ctx.Status(401).JSON(&fiber.Map{
@@ -136,6 +122,11 @@ func (u *userRoute) refresh(ctx *fiber.Ctx) error {
 			"data":    nil,
 		})
 	}
+	cookie := new(fiber.Cookie)
+	cookie.Name = "jid"
+	cookie.Value = newToken.RefreshToken
+	cookie.HTTPOnly = true
+	ctx.Cookie(cookie)
 	return ctx.Status(200).JSON(&fiber.Map{
 		"success": true,
 		"message": "Login success",
